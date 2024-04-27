@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ETTrip] Thailand 2024</title>
+    <!-- Include Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        strong {
+            color: green;
+            font-weight: 1000;
+        }
+
+        button {
+            margin: .125rem;
+            display: flex;
+            align-items: center;
+        }
+
+        li {
+            list-style-type: none;
+        }
+    </style>
+    <link rel="shortcut icon" href="fav.svg" type="image/svg+xml" />
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(day, dayName) in schedule" :key="dayName">
+                <button style="padding: .3rem; color: green; font-weight: bold;" @click="toggleDay(dayName)"><img src="fav.svg"
+                        style="width: 18px; height: 18px; margin-right: .3rem;" />{{ dayName }} ▼</button>
+                <ul v-show="isOpenDay(dayName)">
+                    <li v-for="(activities, timeSlot) in day" :key="timeSlot">
+                        <h3>
+                            <button @click="toggleTimeSlot(dayName, timeSlot)"><time-of-day
+                                    :time-slot="timeSlot"></time-of-day>{{ timeSlot }} ▼</button>
+                        </h3>
+                        <ul v-show="isOpenTimeSlot(dayName, timeSlot)">
+                            <li v-if="typeof activities === 'object'" v-for="(activity, activityTime) in activities"
+                                :key="activityTime">
+                                <strong>{{ activityTime }}</strong>: {{ activity }}
+                            </li>
+                            <li v-else>{{ activities }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const TimeOfDay = {
+            props: ['timeSlot'],
+            computed: {
+                src() {
+                    let name = '';
+                    if (this.timeSlot.includes("Sáng")) {
+                        name = 'morning';
+                    } else if (this.timeSlot.includes("Trưa")) {
+                        name = 'noon';
+                    } else if (this.timeSlot.includes("Chiều")) {
+                        name = 'afternoon';
+                    } else if (this.timeSlot.includes("Tối")) {
+                        name = 'moon';
+                    }
+                    return name + ".png";
+                },
+            },
+            template: `<img :src="src" style="width: 32px; height: 32px; margin-right:.2rem"/>`,
+        };
+
+        Vue.component('time-of-day', TimeOfDay);
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                openDays: {},
+                openTimeSlots: {},
+                schedule: {
+                    "Thứ 6: Tp.HCM ➛ Phuket ➛ Phi Phi": {
+                        "Sáng : Bay ra Phuket": {
+                            "6h - 9h": "Đi ra TSN đi Phuket",
+                            "11h -  11h30": "Checkin Phuket, lấy sim",
+                            "11h30 -  12h30": "Đi taxi ra bến tàu Rassada"
+                        },
+                        "Trưa : Đi tàu ra Koh Phi Phi": {
+                            "12h30 - 13h30": "Ăn trưa",
+                            "14h - 15h": "Đi tàu Speedboat tới Phi Phi",
+                            "15h - 16h30": "Checkin khách sạn nghỉ ngơi"
+                        },
+                        "Chiều : Leo núi checkin View Point [1,2],[3]": {
+                            "16h30 - 17h": "Leo núi checkin View point 1",
+                            "16h30 - 18h31": "Leo núi checkin View point 22",
+                            "16h30 - 18h30": "Leo núi checkin View point 3"
+                        },
+                        "Tối : Khám phá bờ đông Koh Phi Phi": {
+                            "19h - 21h": "Ăn tại làng chài Tonsai(đường Choa Rot)",
+                        }
+                    },
+                    "Thứ 7: Koh Phi Phi": {
+                        "Sáng : Ăn sáng, đặt tour ": {
+                            "8h": "Ăn sáng",
+                            "9h": "Ra tàu đi theo tour, nhớ trả giá",
+                        },
+                        "Trưa : Đi Tour Koh Phi Phi ➛ Vịnh Maya": {
+                            "12h": " Lịch đi theo tour. Đi vịnh Maya nhớ đêm đồ ăn theo, Maya đẹp nhưng cơm dở"
+                        },
+                        "Chiều : Đi Tour Koh Phi Phi ➛ Vịnh Pi Leh": {
+                        },
+                        "Tối : Khám phá bờ tây Koh Phi Phi": {
+                            "19h - 24h": "BBQ Bãi biển",
+                        }
+                    },
+                    "Chủ nhật: Koh Phi Phi ➛ Phuket ": {
+                        "Sáng : Đi tàu về lại Phuket": {
+                            "8h": "Đi ra TSN đi Phuket",
+                            "9h": "Đi ra TSN đi Phuket",
+                            "2h": "Checkin khách sạn",
+                            "11h30 -  12h30": "Đi taxi ra bến tàu Rassada"
+                        },
+                        "Trưa : Đi tàu ra Koh Phi Phi": {
+                            "12h30 - 13h30": "Ăn trưa",
+                            "14h - 15h": "Đi tàu Speedboat tới Phi Phi",
+                            "15h - 16h30": "Checkin khách sạn nghỉ ngơi"
+                        },
+                        "Chiều : Leo núi checkin View Point 1,2,3": {
+                            "16h30 - 17h": "Leo núi checkin View point 1",
+                            "16h30 - 18h30": "Leo núi checkin Vie wpoint 2",
+                            "16h30 - 18h30": "Leo núi checkin View point 3"
+                        },
+                        "Tối : Khám phá phố đêm Koh Phi Phi": {
+                            "19h - 24h": "BBQ Bãi biển",
+                        }
+                    },
+                    "Thứ 2: Phuket ➛ Tp. HCM": {
+                        "Sáng : Về lại Tp.HCM": {
+                            "6h - 9h": "Đi ra TSN đi Phuket",
+                            "11h -  11h30": "Checkin Phuket, lấy sim",
+                            "11h30 -  12h30": "Đi taxi ra bến tàu Rassada"
+                        },
+                    }
+                }
+            },
+            mounted() {
+                // Expand all first-level parents by default
+                for (const dayName in this.schedule) {
+                    this.$set(this.openDays, dayName, true);
+                }
+                // Close all second-level parents by default
+                for (const dayName in this.schedule) {
+                    for (const timeSlot in this.schedule[dayName]) {
+                        this.$set(this.openTimeSlots, `${dayName}_${timeSlot}`, false);
+                    }
+                }
+            },
+            methods: {
+                toggleDay(dayName) {
+                    this.$set(this.openDays, dayName, !this.isOpenDay(dayName));
+                },
+                isOpenDay(dayName) {
+                    return this.openDays.hasOwnProperty(dayName) ? this.openDays[dayName] : false;
+                },
+                toggleTimeSlot(dayName, timeSlot) {
+                    const key = `${dayName}_${timeSlot}`;
+                    this.$set(this.openTimeSlots, key, !this.isOpenTimeSlot(dayName, timeSlot));
+                },
+                isOpenTimeSlot(dayName, timeSlot) {
+                    const key = `${dayName}_${timeSlot}`;
+                    return this.openTimeSlots.hasOwnProperty(key) ? this.openTimeSlots[key] : false;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
