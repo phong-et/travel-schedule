@@ -28,15 +28,106 @@
             list-style-type: none;
         }
     </style>
-    <link rel="shortcut icon" href="fav.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="https://www.longtailboatphiphi.com/img/favicon.ico" type="image/svg+xml" />
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 
 <body>
+    <style>
+        .modal-may-2021 {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 200px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: #000;
+            background-color: rgba(0, 0, 0, .9)
+        }
+
+        .modal-content-may-2021 {
+            margin: auto;
+            display: block;
+        }
+
+        .modal-content-may-2021 {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: .6s;
+            animation-name: zoom;
+            animation-duration: .6s
+        }
+
+        @-webkit-keyframes zoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: 700;
+            transition: .3s
+        }
+
+        .close:focus,
+        .close:hover {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer
+        }
+
+        @media only screen and (max-width:700px) {
+            .modal-content-may-2021 {
+                width: 100%
+            }
+        }
+
+        #my-modal-may-2021 {
+            z-index: 9999999 !important
+        }
+    </style>
+    <div id="my-modal-may-2021" class="modal-may-2021" style="display: none;"><span class="close">×</span><a
+            href="#"><img class="modal-content-may-2021" id="modal-img-may-2021" width="50%" height="70%" src="fav.svg"></a></div>
+    <script>
+        $().ready(function () {
+
+            document.getElementsByClassName('close')[0].onclick = function () {  $('.modal-may-2021').fadeOut('fast') }
+            $('.modal-may-2021').click(function () { $(this).fadeOut('slow') })
+
+        });
+
+    </script>
     <div id="app">
         <ul>
             <li v-for="(day, dayName) in schedule" :key="dayName">
-                <button style="padding: .3rem; color: green; font-weight: bold;" @click="toggleDay(dayName)"><img src="fav.svg"
-                        style="width: 18px; height: 18px; margin-right: .3rem;" />{{ dayName }} ▼</button>
+                <div style="display: flex; align-items: center;">
+                    <button style="padding: .3rem; color: green; font-weight: bold;" @click="toggleDay(dayName)"><img
+                            src="fav.svg" style="width: 18px; height: 18px; margin-right: .3rem;" />{{ dayName }}
+                        ▼</button>
+                    <a style="text-decoration: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" href="#" @click="showMap(dayName)">👉 Map</a>
+                </div>
+
                 <ul v-show="isOpenDay(dayName)">
                     <li v-for="(activities, timeSlot) in day" :key="timeSlot">
                         <h3>
@@ -46,7 +137,7 @@
                         <ul v-show="isOpenTimeSlot(dayName, timeSlot)">
                             <li v-if="typeof activities === 'object'" v-for="(activity, activityTime) in activities"
                                 :key="activityTime">
-                                <strong>{{ activityTime }}</strong>: {{ activity }}
+                                <strong>{{ activityTime }}</strong>:&nbsp;<span v-html="activity"></span>
                             </li>
                             <li v-else>{{ activities }}</li>
                         </ul>
@@ -55,7 +146,6 @@
             </li>
         </ul>
     </div>
-
     <script>
         const TimeOfDay = {
             props: ['timeSlot'],
@@ -103,41 +193,40 @@
                         },
                         "Tối : Khám phá bờ đông Koh Phi Phi": {
                             "19h - 21h": "Ăn tại làng chài Tonsai(đường Choa Rot)",
+                            "21": "",
                         }
                     },
                     "Thứ 7: Koh Phi Phi": {
                         "Sáng : Ăn sáng, đặt tour ": {
                             "8h": "Ăn sáng",
-                            "9h": "Ra tàu đi theo tour, nhớ trả giá",
+                            "9h": "Ra tàu đi theo tour, nhớ trả giá trên <a target='_blank' href='https://www.longtailboatphiphi.com/tours-detail.php?id=72'>website</a>",
                         },
-                        "Trưa : Đi Tour Koh Phi Phi ➛ Vịnh Maya": {
-                            "12h": " Lịch đi theo tour. Đi vịnh Maya nhớ đêm đồ ăn theo, Maya đẹp nhưng cơm dở"
+                        "Trưa : Tour Phi Phi Ley ": {
+                            "10h - 13h": "Đi Viking Cave ➛ Pieh Bay, Maya bay. Nhớ đêm đồ ăn theo, Maya đẹp nhưng cơm dở"
                         },
-                        "Chiều : Đi Tour Koh Phi Phi ➛ Vịnh Pi Leh": {
+                        "Chiều : Tour Phi Phi Don": {
+                            "10h - 16h": "Đi thuyền vòng quanh đảo Phi Phi 20km"
                         },
                         "Tối : Khám phá bờ tây Koh Phi Phi": {
-                            "19h - 24h": "BBQ Bãi biển",
+                            "18h - 20h": "Ăn tối",
+                            "20h - 24h": "Xem hội chợ biển"
                         }
                     },
                     "Chủ nhật: Koh Phi Phi ➛ Phuket ": {
                         "Sáng : Đi tàu về lại Phuket": {
-                            "8h": "Đi ra TSN đi Phuket",
-                            "9h": "Đi ra TSN đi Phuket",
-                            "2h": "Checkin khách sạn",
-                            "11h30 -  12h30": "Đi taxi ra bến tàu Rassada"
+                            "7h - 9h": "Last breakfast vs Koh Phi Phi",
+                            "9h - 11h": "Lên tàu Ferry Boat về Phuket",
+                            "11h - 11h30": "Đi taxi về Patong"
                         },
-                        "Trưa : Đi tàu ra Koh Phi Phi": {
-                            "12h30 - 13h30": "Ăn trưa",
-                            "14h - 15h": "Đi tàu Speedboat tới Phi Phi",
-                            "15h - 16h30": "Checkin khách sạn nghỉ ngơi"
+                        "Trưa : Checkin KS The Crib Patong": {
+                            "12h - 14h": "Ăn trưa tại quán gần khách sạn (?)",
+                            "14h - 16h": "Checkin khách sạn nghỉ ngơi"
                         },
-                        "Chiều : Leo núi checkin View Point 1,2,3": {
-                            "16h30 - 17h": "Leo núi checkin View point 1",
-                            "16h30 - 18h30": "Leo núi checkin Vie wpoint 2",
-                            "16h30 - 18h30": "Leo núi checkin View point 3"
+                        "Chiều : Dạo biển Patong Phuket": {
+                            "16h - 18h": "Đi bộ bãi biển Patong"
                         },
-                        "Tối : Khám phá phố đêm Koh Phi Phi": {
-                            "19h - 24h": "BBQ Bãi biển",
+                        "Tối : Khám phá phố đêm Bangla Phuket": {
+                            "18h - 23h": "Ăn tối và đi chợ đêm Phuket khu đường Bangla"
                         }
                     },
                     "Thứ 2: Phuket ➛ Tp. HCM": {
@@ -147,6 +236,12 @@
                             "11h30 -  12h30": "Đi taxi ra bến tàu Rassada"
                         },
                     }
+                },
+                maps: {
+                    "Thứ 6: Tp.HCM ➛ Phuket ➛ Phi Phi": "https://img001.prntscr.com/file/img001/qNRyj29mRAWhjV7G05aiig.png",
+                    "Thứ 7: Koh Phi Phi": "https://www.longtailboatphiphi.com/picture/tours/1568801862_map.jpg",
+                    "Chủ nhật: Koh Phi Phi ➛ Phuket ": "https://img001.prntscr.com/file/img001/k9E1u9eMTv-N0kV5786GZg.png",
+                    "Thứ 2: Phuket ➛ Tp. HCM": ""
                 }
             },
             mounted() {
@@ -175,6 +270,12 @@
                 isOpenTimeSlot(dayName, timeSlot) {
                     const key = `${dayName}_${timeSlot}`;
                     return this.openTimeSlots.hasOwnProperty(key) ? this.openTimeSlots[key] : false;
+                },
+                showMap(dayName) {
+                    var modal = $('#my-modal-may-2021'),
+                        mi = $('#modal-img-may-2021');
+                    modal.css('display', 'block')
+                    mi.attr('src', this.maps[dayName])
                 }
             }
         })
