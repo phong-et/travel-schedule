@@ -38,7 +38,7 @@
             display: none;
             position: fixed;
             z-index: 1;
-            padding-top: 200px;
+            padding-top: 10px;
             left: 0;
             top: 0;
             width: 100%;
@@ -108,16 +108,19 @@
         }
     </style>
     <div id="my-modal-may-2021" class="modal-may-2021" style="display: none;"><span class="close">×</span><a
-            href="#"><img class="modal-content-may-2021" id="modal-img-may-2021" width="50%" height="70%" src="fav.svg"></a></div>
+            href="#"><img class="modal-content-may-2021" id="modal-img-may-2021" width="70%" height="90%"
+                src="fav.svg"></a></div>
     <script>
         $().ready(function () {
 
-            document.getElementsByClassName('close')[0].onclick = function () {  $('.modal-may-2021').fadeOut('fast') }
+            document.getElementsByClassName('close')[0].onclick = function () { $('.modal-may-2021').fadeOut('fast') }
             $('.modal-may-2021').click(function () { $(this).fadeOut('slow') })
 
         });
 
     </script>
+    <h1 style="margin: 0 auto;">[ETTrip] Thailand 2024</h1>
+    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Lịch trình</h2>
     <div id="app">
         <ul>
             <li v-for="(day, dayName) in schedule" :key="dayName">
@@ -125,7 +128,8 @@
                     <button style="padding: .3rem; color: green; font-weight: bold;" @click="toggleDay(dayName)"><img
                             src="fav.svg" style="width: 18px; height: 18px; margin-right: .3rem;" />{{ dayName }}
                         ▼</button>
-                    <a style="text-decoration: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" href="#" @click="showMap(dayName)">👉 Map</a>
+                    <a style="text-decoration: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"
+                        href="#" @click="showMap(dayName)">👉 Map</a>
                 </div>
 
                 <ul v-show="isOpenDay(dayName)">
@@ -137,7 +141,19 @@
                         <ul v-show="isOpenTimeSlot(dayName, timeSlot)">
                             <li v-if="typeof activities === 'object'" v-for="(activity, activityTime) in activities"
                                 :key="activityTime">
-                                <strong>{{ activityTime }}</strong>:&nbsp;<span v-html="activity"></span>
+                                <strong>{{ activityTime }}</strong>:&nbsp;
+                                <span v-if="typeof activity === 'object'">{{activity.title}}
+                                    <div v-for="(ref, index) in activity.refs" :key="index" style="margin: 5px;">
+                                        <iframe width="560" height="315"
+                                            :src="`https://www.youtube.com/embed/${ref}`"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                        </iframe>
+                                    </div>
+                                </span>
+
+                                <span v-else v-html="activity"></span>
                             </li>
                             <li v-else>{{ activities }}</li>
                         </ul>
@@ -145,6 +161,28 @@
                 </ul>
             </li>
         </ul>
+    </div>
+    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Tài liệu: </h2>
+    - <a href="https://docs.google.com/spreadsheets/d/1BfEGy48rWjUeRfMEqBLNZErqpDZIDRvdNG3RSV7c56E/edit#gid=1877969924"
+        style="text-decoration: none; font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"
+        target="_blank">👉 Sheet</a> <br />
+    - <a href="https://docs.google.com/document/d/1aX2NZbOY_IAMcSREOPuDhTVrOs3fexJ0S7OHMr2GMHM/edit"
+        style="text-decoration: none; font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"
+        target="_blank">👉 Doc</a>
+    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Chi phí max : 150tr</h2>
+    <div style="padding-left:50px">
+        Máy bay :<br />
+        Sim: <br />
+        Tàu : <br />
+        Khách sạn: <br />
+        Taxi : tr<br />
+        Thuế bảo vệ môi trường Koh Phi Phi : 20 bath/ người<br />
+        Thuế bảo vệ môi trường Maya bay: 400 bath / người <br />
+
+        Chi phí cứng : tr<br />
+        Chi phí mềm : tr <br />
+        Ăn : (500k / người ngày)<br />
+        Chơi : tr => tr/ người<br />
     </div>
     <script>
         const TimeOfDay = {
@@ -187,7 +225,10 @@
                             "15h - 16h30": "Checkin khách sạn nghỉ ngơi"
                         },
                         "Chiều : Leo núi checkin View Point [1,2],[3]": {
-                            "16h30 - 18h": "Leo núi checkin Viewpoint 1,2",
+                            "16h30 - 18h": {
+                                "title": "Leo núi checkin Viewpoint 1,2",
+                                "refs": ["N5Qx2l_Yh9Q?si=Weox8iPQ2_hTMTtH","EaztsY-C3ck?si=J6KUNQKOzjvUbytz"],
+                            },
                             "18h": "Đủ thời gian thì đi Viewpoint 3",
 
                         },
@@ -246,7 +287,7 @@
             mounted() {
                 // Expand all first-level parents by default
                 for (const dayName in this.schedule) {
-                    this.$set(this.openDays, dayName, true);
+                    this.$set(this.openDays, dayName, false);
                 }
                 // Close all second-level parents by default
                 for (const dayName in this.schedule) {
