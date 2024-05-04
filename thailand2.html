@@ -107,6 +107,38 @@
         #my-modal-may-2021 {
             z-index: 9999999 !important
         }
+
+        @keyframes blink-background {
+            0% {
+                background-color: white;
+            }
+
+            50% {
+                background-color: yellow;
+            }
+
+            100% {
+                background-color: white;
+            }
+        }
+
+        @keyframes blink-text {
+            0% {
+                color: black;
+            }
+
+            50% {
+                color: red;
+            }
+
+            100% {
+                color: black;
+            }
+        }
+
+        .blink {
+            animation: blink-background 1s infinite, blink-text 1s infinite;
+        }
     </style>
     <div id="my-modal-may-2021" class="modal-may-2021" style="display: none;"><span class="close">×</span><a
             href="#"><img class="modal-content-may-2021" id="modal-img-may-2021" width="70%" height="90%"
@@ -161,28 +193,34 @@
             </li>
         </ul>
     </div>
-    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Tài liệu: </h2>
+    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Chi phí max : 150tr / 9
+        người</h2>
+    <div style="padding-left:50px" class="expense">
+        <b>Chi phí cứng : 86,730,000 ₫<br /></b>
+        <ul>
+            <li>Máy bay : 52,641,000 ₫<br /></li>
+            <li>Sim: 1,584,000 ₫ </li>
+            <li>Tàu: 8,370,000 ₫</li>
+            <li>Khách sạn: 15,500,000 ₫</li>
+            <li>Taxi: 2.100.000</li>
+            <li><a target="_blank" href="https://www.longtailboatphiphi.com/tours-detail.php?id=72">Tour private 4h vịnh
+                    Maya bằng thuyền đuôi dài</a>: 7,070,000 ₫ (gổm Thuế bảo vệ môi trường Maya bay: 400 bath / người)
+            </li>
+        </ul>
+        <b>Chi phí mềm</b> : 63tr
+        <ul>
+            <li>Ăn : 20tr (hơn 500k / người ngày)<br /><br /></li>
+            <li>Chơi : tùy tâm...trạng (cà phê cà pháo, cỏ cây, bia bọt, extra tour...)</li>
+        </ul>
+        <p><b>Tiền mặt bath thái</b> : <b class="blink">150tr - 53tr = 97tr ~ 140k bath</b>(gặp vấn đề giữ tiền mặt khi chơi lặn biển)</p>
+    </div>
+    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Tài liệu chi tiết: </h2>
     - <a href="https://docs.google.com/spreadsheets/d/1BfEGy48rWjUeRfMEqBLNZErqpDZIDRvdNG3RSV7c56E/edit#gid=1877969924"
         style="text-decoration: none; font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"
         target="_blank">👉 Sheet</a> <br />
     - <a href="https://docs.google.com/document/d/1aX2NZbOY_IAMcSREOPuDhTVrOs3fexJ0S7OHMr2GMHM/edit"
         style="text-decoration: none; font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"
         target="_blank">👉 Doc</a>
-    <h2><img width="32" height="32" src="https://www.longtailboatphiphi.com/img/favicon.ico" /> Chi phí max : 150tr</h2>
-    <div style="padding-left:50px">
-        Máy bay :<br />
-        Sim: <br />
-        Tàu : <br />
-        Khách sạn: <br />
-        Taxi : tr<br />
-        Thuế bảo vệ môi trường Koh Phi Phi : 20 bath/ người<br />
-        Thuế bảo vệ môi trường Maya bay: 400 bath / người <br />
-
-        Chi phí cứng : tr<br />
-        Chi phí mềm : tr <br />
-        Ăn : (500k / người ngày)<br />
-        Chơi : tr => tr/ người<br />
-    </div>
     <script>
         const TimeOfDay = {
             props: ['timeSlot'],
@@ -240,7 +278,7 @@
                             "8h - 12h": "Cafe sáng với bình minh Phi Phi, trekking quanh đảo khám phá phố, núi, rừng",
                         },
                         "Trưa : Ăn trưa & book tour  ": {
-                           "12h -14h": "Ăn trưa về khách sạn tránh nắng"
+                            "12h -14h": "Ăn trưa về khách sạn tránh nắng"
                         },
                         "Chiều : Tour tham quan lặn biển Phi Phi Leh": {
                             "14h - 18h": {
